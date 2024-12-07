@@ -334,7 +334,28 @@ public class ImageController {
         }
     }
 
-    @GetMapping("/{imageName}")
+    // @GetMapping("/{imageName}")
+    // public ResponseEntity<Resource> getImage(@PathVariable String imageName) {
+    //     try {
+    //         Path filePath = rootLocation.resolve(imageName).normalize();
+    //         Resource resource = new UrlResource(filePath.toUri());
+
+    //         if (resource.exists() && resource.isReadable()) {
+    //             String contentType = Files.probeContentType(filePath);
+    //             MediaType mediaType = contentType != null ? MediaType.parseMediaType(contentType) : MediaType.APPLICATION_OCTET_STREAM;
+
+    //             return ResponseEntity.ok()
+    //                     .contentType(mediaType)
+    //                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+    //                     .body(resource);
+    //         } else {
+    //             return ResponseEntity.notFound().build();
+    //         }
+    //     } catch (IOException e) {
+    //         return ResponseEntity.status(500).body(null);
+    //     }
+    // }
+@GetMapping("/{imageName}")
     public ResponseEntity<Resource> getImage(@PathVariable String imageName) {
         try {
             Path filePath = rootLocation.resolve(imageName).normalize();
@@ -355,7 +376,6 @@ public class ImageController {
             return ResponseEntity.status(500).body(null);
         }
     }
-
     @GetMapping("/all")
     public ResponseEntity<List<Image>> getAllImages() {
         return ResponseEntity.ok(imageService.getAllImages());
