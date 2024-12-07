@@ -108,7 +108,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/seller")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://handloom-products.vercel.app")
 public class SellerController {
 
     @Autowired
