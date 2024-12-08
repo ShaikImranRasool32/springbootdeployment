@@ -356,27 +356,52 @@ public class ImageController {
     //         return ResponseEntity.status(500).body(null);
     //     }
     // }
+    // @GetMapping("/{imageName}")
+    // public ResponseEntity<Resource> getImage(@PathVariable String imageName) {
+    //     try {
+    //         Path filePath = rootLocation.resolve(imageName).normalize();
+    //         Resource resource = new UrlResource(filePath.toUri());
+
+    //         if (resource.exists() && resource.isReadable()) {
+    //             String contentType = Files.probeContentType(filePath);
+    //             MediaType mediaType = contentType != null ? MediaType.parseMediaType(contentType) : MediaType.APPLICATION_OCTET_STREAM;
+
+    //             return ResponseEntity.ok()
+    //                     .contentType(mediaType)
+    //                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+    //                     .body(resource);
+    //         } else {
+    //             return ResponseEntity.notFound().build();
+    //         }
+    //     } catch (IOException e) {
+    //         return ResponseEntity.status(500).body(null);
+    //     }
+    // }
     @GetMapping("/{imageName}")
-    public ResponseEntity<Resource> getImage(@PathVariable String imageName) {
-        try {
-            Path filePath = rootLocation.resolve(imageName).normalize();
-            Resource resource = new UrlResource(filePath.toUri());
+public ResponseEntity<Resource> getImage(@PathVariable String imageName) {
+    try {
+        Path filePath = rootLocation.resolve(imageName).normalize();
+        Resource resource = new UrlResource(filePath.toUri());
 
-            if (resource.exists() && resource.isReadable()) {
-                String contentType = Files.probeContentType(filePath);
-                MediaType mediaType = contentType != null ? MediaType.parseMediaType(contentType) : MediaType.APPLICATION_OCTET_STREAM;
+        if (resource.exists() && resource.isReadable()) {
+            String contentType = Files.probeContentType(filePath);
+            MediaType mediaType = contentType != null ? MediaType.parseMediaType(contentType) : MediaType.APPLICATION_OCTET_STREAM;
 
-                return ResponseEntity.ok()
-                        .contentType(mediaType)
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
-                        .body(resource);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (IOException e) {
-            return ResponseEntity.status(500).body(null);
+            // Use full URL when serving the image
+            String imageUrl = "https://springbootsdpproject.up.railway.app/api/seller/images/" + imageName;
+
+            return ResponseEntity.ok()
+                    .contentType(mediaType)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+                    .body(resource);
+        } else {
+            return ResponseEntity.notFound().build();
         }
+    } catch (IOException e) {
+        return ResponseEntity.status(500).body(null);
     }
+}
+
     @GetMapping("/images/{imageName}")
 public ResponseEntity<Resource> getImage(@PathVariable String imageName) {
     try {
