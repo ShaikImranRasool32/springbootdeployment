@@ -363,57 +363,28 @@ public class ImageController {
     //         return ResponseEntity.status(500).body(null);
     //     }
     // }
-    // @GetMapping("/{imageName}")
-    // public ResponseEntity<Resource> getImage(@PathVariable String imageName) {
-    //     try {
-    //         Path filePath = rootLocation.resolve(imageName).normalize();
-    //         Resource resource = new UrlResource(filePath.toUri());
-
-    //         if (resource.exists() && resource.isReadable()) {
-    //             String contentType = Files.probeContentType(filePath);
-    //             MediaType mediaType = contentType != null ? MediaType.parseMediaType(contentType) : MediaType.APPLICATION_OCTET_STREAM;
-
-    //             return ResponseEntity.ok()
-    //                     .contentType(mediaType)
-    //                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
-    //                     .body(resource);
-    //         } else {
-    //             return ResponseEntity.notFound().build();
-    //         }
-    //     } catch (IOException e) {
-    //         return ResponseEntity.status(500).body(null);
-    //     }
-    // }
     @GetMapping("/{imageName}")
-public ResponseEntity<Resource> getImage(@PathVariable String imageName, HttpServletRequest request, HttpServletResponse response) {
-    try {
-        // Check if the request is using HTTP, and redirect to HTTPS
-        if ("http".equals(request.getScheme())) {
-            response.setStatus(HttpStatus.MOVED_PERMANENTLY.value());
-            response.setHeader("Location", "https://" + request.getServerName() + request.getRequestURI());
-            return null; // Return null to stop further processing
+    public ResponseEntity<Resource> getImage(@PathVariable String imageName) {
+        try {
+            Path filePath = rootLocation.resolve(imageName).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if (resource.exists() && resource.isReadable()) {
+                String contentType = Files.probeContentType(filePath);
+                MediaType mediaType = contentType != null ? MediaType.parseMediaType(contentType) : MediaType.APPLICATION_OCTET_STREAM;
+
+                return ResponseEntity.ok()
+                        .contentType(mediaType)
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+                        .body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body(null);
         }
-
-        // Normal image serving logic
-        Path filePath = rootLocation.resolve(imageName).normalize();
-        Resource resource = new UrlResource(filePath.toUri());
-
-        if (resource.exists() && resource.isReadable()) {
-            String contentType = Files.probeContentType(filePath);
-            MediaType mediaType = contentType != null ? MediaType.parseMediaType(contentType) : MediaType.APPLICATION_OCTET_STREAM;
-
-            return ResponseEntity.ok()
-                    .contentType(mediaType)
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
-                    .body(resource);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    } catch (IOException e) {
-        return ResponseEntity.status(500).body(null);
     }
-}
-
+  
    
 
 //     @GetMapping("/images/{imageName}")
