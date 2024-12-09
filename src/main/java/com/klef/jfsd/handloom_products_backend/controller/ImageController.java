@@ -295,9 +295,11 @@ import java.util.Optional;
 import com.klef.jfsd.handloom_products_backend.model.Image;
 import com.klef.jfsd.handloom_products_backend.repository.ImageRepository;
 import com.klef.jfsd.handloom_products_backend.service.ImageService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 
 
+@CrossOrigin(origins = "https://handloom-products.vercel.app")
 @RestController
 @RequestMapping("/api/seller/images")
 public class ImageController {
